@@ -29,5 +29,5 @@ env:
     - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
 
 after_success:
-    "curl --ftp-create-dirs -T uploadfilename -u $FTP_USER:$FTP_PASSWORD ftp.mondal.in"
+    "curl --ftp-create-dirs -T dist -u $FTP_USER:$FTP_PASSWORD ftp.mondal.in"
 # script: karma start config/karma.conf.js --single-run
