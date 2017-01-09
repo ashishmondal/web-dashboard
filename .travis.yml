@@ -19,15 +19,9 @@ before_install:
 
 before_script:
 - npm install -g angular-cli
-#- npm install -g karma
 - npm install
 - ng build
 
-env:
-  global:
-    - "FTP_USER=dashboard@mondal.in"
-    - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
-
-after_success:
-    "curl --ftp-create-dirs -T dist -u $FTP_USER:$FTP_PASSWORD ftp.mondal.in"
-# script: karma start config/karma.conf.js --single-run
+deploy:
+  provider: script
+  script: deploy.sh
