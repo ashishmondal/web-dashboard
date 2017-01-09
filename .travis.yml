@@ -23,5 +23,10 @@ before_script:
 - npm install
 - ng build
 
+env:
+  global:
+    - "FTP_USER=dashboard%40mondal.in"
+    - "FTP_PASSWORD=6Hr2%5ECqXMD2A6%25qA"
+
 after_success:
   "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PWD ftp://ftp.mondal.in"
