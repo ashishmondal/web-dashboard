@@ -29,4 +29,4 @@ env:
     - "FTP_PASSWORD=6Hr2%5ECqXMD2A6%25qA"
 
 after_success:
-  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PWD ftp://ftp.mondal.in"
+  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PASSWORD ftp://ftp.mondal.in"
