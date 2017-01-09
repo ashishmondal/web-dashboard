@@ -19,6 +19,10 @@ export class CurrentWeatherComponent implements OnInit {
       .setUnit(new Celsius());
   }
 
+  public get cityName() {
+    return this.weather.name;
+  }
+
   private weather: ICurrentWeather;
 
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }

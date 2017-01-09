@@ -4,6 +4,10 @@ language: node_js
 node_js:
   - 'node'
 
+notifications:
+  email:
+    - 8329074142@vtext.com
+
 addons:
 apt:
   sources:
@@ -23,11 +27,5 @@ before_script:
 - npm install
 - ng build
 
-env:
-  global:
-    - "FTP_USER=dashboard@mondal.in"
-    - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
-
 after_success:
   gulp deploy
-#  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PASSWORD ftp://ftp.mondal.in/p.json"
