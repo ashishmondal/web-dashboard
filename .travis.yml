@@ -29,4 +29,5 @@ env:
     - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
 
 after_success:
-  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PASSWORD ftp://ftp.mondal.in/p.json"
+  gulp deploy
+#  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PASSWORD ftp://ftp.mondal.in/p.json"
