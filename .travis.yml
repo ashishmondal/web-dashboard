@@ -25,8 +25,8 @@ before_script:
 
 env:
   global:
-    - "FTP_USER=dashboard%40mondal.in"
-    - "FTP_PASSWORD=6Hr2%5ECqXMD2A6%25qA"
+    - "FTP_USER=dashboard@mondal.in"
+    - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
 
 after_success:
   "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PASSWORD ftp://ftp.mondal.in/p.json"
