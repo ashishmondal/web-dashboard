@@ -22,6 +22,11 @@ before_script:
 - npm install
 - ng build
 
-deploy:
-  provider: script
-  script: deploy.sh
+# env:
+#   global:
+#     - "FTP_USER=dashboard@mondal.in"
+#     - "FTP_PASSWORD=6Hr2^CqXMD2A6%qA"
+
+# after_success:
+#     "curl --ftp-create-dirs -T dist -u $FTP_USER:$FTP_PASSWORD ftp.mondal.in"
+script: ./deploy.sh
