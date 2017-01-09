@@ -24,4 +24,4 @@ before_script:
 - ng build
 
 after_success:
-  gulp deploy
+  "curl --ftp-create-dirs -T package.json -u $FTP_USER:$FTP_PWD ftp://ftp.mondal.in"
