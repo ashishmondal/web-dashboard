@@ -1,0 +1,16 @@
+:host{
+    overflow: auto;
+}
+
+.db-right-align{
+    text-align: right;
+}
+
+td {
+    vertical-align: bottom;
+}
+
+.db-summary-bottom, .db-when-bottom {
+    height: 1px;
+    background: white;
+}

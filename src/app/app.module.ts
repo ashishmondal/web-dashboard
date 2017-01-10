@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 
 import { WeatherModule } from './weather/weather.module';
+import { CalendarModule } from './calendar/calendar.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { WeatherModule } from './weather/weather.module';
     HttpModule,
     JsonpModule,
 
-    WeatherModule
+    WeatherModule,
+    CalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,6 +6,7 @@ import { UnitConverterPipe } from './unit-converter.pipe';
   imports: [
     CommonModule
   ],
+  exports:[UnitConverterPipe],
   declarations: [UnitConverterPipe]
 })
-export class CommonModule { }
+export class SharedModule { }

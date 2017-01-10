@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
+
+import { ScheduleComponent } from './schedule/schedule.component';
+import { CalendarService } from './calendar.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
-  declarations: []
+  exports: [ScheduleComponent],
+  providers: [CalendarService],
+  declarations: [ScheduleComponent]
 })
 export class CalendarModule { }

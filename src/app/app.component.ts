@@ -7,7 +7,8 @@ import { BackgroundImageService } from './background-image.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   host: {
-    '[style.background-image]': `backgroundUrl ? 'url(' + backgroundUrl + ')': ''`
+    // disable background image
+   // '[style.background-image]': `backgroundUrl ? 'url(' + backgroundUrl + ')': ''`
   }
 })
 export class AppComponent implements OnInit {

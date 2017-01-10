@@ -17,7 +17,7 @@ export class WeatherService {
     const params = location.searchParams;
     params.set('appid', this.apiKey);
 
-    return Observable.timer(0, 60000)
+    return Observable.timer(0, 1000 * 60 * 15) // Update every 15 min
       .flatMap(() => this.http.get(url, { search: params }))
       .map(response => response.json() as ICurrentWeather);
   }

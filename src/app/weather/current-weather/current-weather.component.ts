@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { WeatherService, ICurrentWeather, ZipCodeLocation } from '../weather.service';
-import { Temperature, Kelvin, Celsius } from '../../common/units/temperature';
 
 @Component({
   selector: 'db-current-weather',
@@ -13,16 +12,8 @@ import { Temperature, Kelvin, Celsius } from '../../common/units/temperature';
 })
 export class CurrentWeatherComponent implements OnInit {
 
-  public get currentTemperature() {
-    return new Temperature(this.weather.main.temp, new Kelvin())
-      .setUnit(new Celsius());
-  }
-
-  public get cityName() {
-    return this.weather.name;
-  }
-
-  private weather: ICurrentWeather;
+  temperatureUnit: string = '°C';  
+  weather: ICurrentWeather;
 
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
 

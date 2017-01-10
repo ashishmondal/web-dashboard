@@ -1,0 +1,17 @@
+<div *ngIf="allEvents" fxFill fxLayout="column" fxLayoutAlign="start end">
+  <table>
+    <tr *ngFor="let e of upcomingEvents">
+      <td class="db-right-align">
+        <div>{{e.summary}}</div>
+        <div class="db-summary-bottom"></div>
+      </td>
+      <td>
+        <div>{{e.when.day}}
+        </div>
+        <div> {{e.when.time}}
+        </div>
+        <div class="db-when-bottom"></div>
+      </td>
+    </tr>
+  </table>
+</div>
