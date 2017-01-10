@@ -1,6 +1,15 @@
-<span class="wd-temperature">
-  {{ currentTemperature }} 
-</span>
-<span clas="wd-unit">
-  {{ currentTemperature?.unit }}
-</span>
+<div *ngIf="weather" fxLayout="column" fxFlexFill fxLayoutAlign="center center">
+  <div>
+    {{ cityName }}
+  </div>
+  <div class="wd-temperature">
+    {{ currentTemperature }}
+  </div>
+  <div clas="wd-unit">
+    {{ currentTemperature.unit }}
+  </div>
+  <div>
+    <div>{{weather.main.temp_min}}</div>
+    <div>{{weather.main.temp_max}}</div>
+  </div>
+</div>
