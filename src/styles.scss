@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
+@import './assets/weather-icons/sass/weather-icons';
 
 html {
     background-color: black;
@@ -7,7 +8,7 @@ html {
 
 html, body {
     height: 100%;
-    margin: 0;
+    margin: 0%;
     padding: 0;
 }
 
