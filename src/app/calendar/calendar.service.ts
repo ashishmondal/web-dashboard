@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs';
 
 let ical = require('ical');
 
@@ -11,7 +14,8 @@ export class CalendarService {
   }
 
   getCalendar() {
-    return this.http.get(this.icalUrl)
+    return Observable.timer(0, 1000 * 60 * 60) // Update every hour
+      .flatMap(() => this.http.get(this.icalUrl))
       .map(response => {
         return ical.parseICS(response.json()) as { [key: string]: IEvent };
       });

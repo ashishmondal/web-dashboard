@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CalendarService, IEvent } from '../calendar.service';
+import { Observable } from 'rxjs/Observable';
 
 import * as moment from 'moment';
+import 'rxjs';
 
 @Component({
   selector: 'db-schedule',
@@ -42,6 +44,10 @@ export class ScheduleComponent implements OnInit {
           });
         this.cdRef.markForCheck();
       });
+
+    // Also, update every minute
+    Observable.interval(1000 * 60)
+      .subscribe(() => this.cdRef.markForCheck());
   }
 
   getWhen(event: IEvent) {
