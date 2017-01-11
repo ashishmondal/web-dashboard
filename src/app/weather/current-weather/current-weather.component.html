@@ -2,6 +2,9 @@
   <div fxFlexAlign="center">
     {{ weather.name }}
   </div>
+  <div fxFlexAlign="center">
+    {{ sun }}
+  </div>
   <div fxLayout="row" fxLayoutAlign="center center">
     <div class="wd-temperature">
       {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
@@ -12,6 +15,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between">
     <div>{{weather.main.temp_min | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
+    <div *ngFor="let w of weather.weather">{{w.main}}</div>
     <div>{{weather.main.temp_max | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
   </div>
 </div>
