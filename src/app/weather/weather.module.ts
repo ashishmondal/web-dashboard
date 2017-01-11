@@ -5,6 +5,8 @@ import { CurrentWeatherComponent } from './current-weather/current-weather.compo
 import { WeatherService } from './weather.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { SettingsService } from '../settings/settings.service';
+
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -16,7 +18,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   exports: [CurrentWeatherComponent],
-  providers: [WeatherService],
+  providers: [WeatherService, SettingsService],
   declarations: [CurrentWeatherComponent]
 })
 export class WeatherModule { }

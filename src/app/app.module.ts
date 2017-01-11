@@ -6,8 +6,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 
-import { WeatherModule } from './weather/weather.module';
-import { CalendarModule } from './calendar/calendar.module';
+import { HomeModule } from './home/home.module';
+import { SettingsModule } from './settings/settings.module';
+
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,12 +18,11 @@ import { CalendarModule } from './calendar/calendar.module';
   imports: [
     FlexLayoutModule.forRoot(),
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    JsonpModule,
 
-    WeatherModule,
-    CalendarModule
+    AppRoutingModule,
+
+    HomeModule,
+    SettingsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
+import { SettingsService } from '../settings/settings.service';
 
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CalendarService } from './calendar.service';
@@ -11,7 +12,7 @@ import { CalendarService } from './calendar.service';
     HttpModule
   ],
   exports: [ScheduleComponent],
-  providers: [CalendarService],
+  providers: [CalendarService, SettingsService],
   declarations: [ScheduleComponent]
 })
 export class CalendarModule { }

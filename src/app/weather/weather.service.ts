@@ -1,25 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, URLSearchParams } from '@angular/http';
+import { SettingsService } from '../settings/settings.service';
 import 'rxjs';
 
 @Injectable()
 export class WeatherService {
 
-  private apiKey = 'cc3c044d17320ee69f25d28d84923136';
-  private location = '';
-  constructor(private http: Http) {
-
+  private apiKey: string;
+  private location: IWeatherLocation;
+  constructor(private http: Http, settingsService: SettingsService) {
+    this.apiKey = settingsService.load().owApiKey;
+    const loc = settingsService.load().cityId.split(',');
+    this.location = new ZipCodeLocation(loc[0], loc[1]);
   }
 
-  getCurrentWeatherDetails(location: IWeatherLocation): Observable<ICurrentWeather> {
+  getCurrentWeatherDetails(): Observable<ICurrentWeather> {
     const url = 'http://api.openweathermap.org/data/2.5/weather';
-    const params = location.searchParams;
+    const params = this.location.searchParams;
     params.set('appid', this.apiKey);
 
     return Observable.timer(0, 1000 * 60 * 15) // Update every 15 min
       .flatMap(() => this.http.get(url, { search: params }))
       .map(response => response.json() as ICurrentWeather);
+  }
+
+  getMoonPhase(date = new Date()) {
+    var lp = 2551443;
+    var new_moon = new Date(1970, 0, 7, 20, 35, 0);
+    var phase = ((date.getTime() - new_moon.getTime()) / 1000) % lp;
+    return Math.floor(phase / (24 * 3600));
   }
 }
 

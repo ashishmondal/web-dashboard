@@ -1,22 +1,27 @@
 <div *ngIf="weather" fxLayout="column" fxFlexFill fxLayoutAlign="center">
-  <i class="wi wi-night-sleet"></i>
   <div fxFlexAlign="center">
     {{ weather.name }}
   </div>
   <div fxFlexAlign="center">
-    {{ sun }}
+    <i class="wi wi-owm-701 db-current-condition"></i>
   </div>
   <div fxLayout="row" fxLayoutAlign="center center">
+    <div>{{weather.main.temp_min | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
     <div class="wd-temperature">
       {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
     <div clas="wd-unit">
       {{ temperatureUnit }}
     </div>
+    <div>{{weather.main.temp_max | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between">
-    <div>{{weather.main.temp_min | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
+    <div>
+      <i class="wi" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime }}
+    </div>
+    <i class="wi" [ngClass]="'wi-moon-'+moonPhase"></i>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between">
     <div *ngFor="let w of weather.weather">{{w.main}}</div>
-    <div>{{weather.main.temp_max | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
   </div>
 </div>

@@ -15,24 +15,22 @@ export class CurrentWeatherComponent implements OnInit {
 
   temperatureUnit: string = '°C';
   weather: ICurrentWeather;
-  sun: string;
+  sunEventTime: string;
+  isSunriseNext = true;
+  moonPhase = 0;
 
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    const location = new ZipCodeLocation('77429', 'us');
-
-    this.weatherService.getCurrentWeatherDetails(location)
+    this.weatherService.getCurrentWeatherDetails()
       .subscribe(weather => {
         this.weather = weather;
 
         const sunrise = moment(weather.sys.sunrise * 1000), sunset = moment(weather.sys.sunset * 1000);
-        if(sunrise.isBefore(sunset)){
-          this.sun =  sunrise.format('[Sunrise:] h:mm A');
-        } else {
-          this.sun =  sunset.format('[Sunset:] h:mm A');
-        }
+        this.isSunriseNext = sunrise.isBefore(sunset) && moment().isBefore(sunrise);
+        this.sunEventTime = (this.isSunriseNext ? sunrise : sunset).format('h:mm A');
 
+        this.moonPhase = this.weatherService.getMoonPhase();
         this.cdRef.markForCheck();
       });
   }
