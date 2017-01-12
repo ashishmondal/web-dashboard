@@ -1,12 +1,18 @@
-:host{
-    color: white;
-    text-shadow: 4pt 4pt 4pt rgba(0, 0, 0, 0.5);
-}
+// :host{
+//     color: white;
+//     text-shadow: 4pt 4pt 4pt rgba(0, 0, 0, 0.5);
+// }
 
 .wd-temperature{
     font-size: 6em;
+    margin: -20pt 5pt;
 }
 
 .db-current-condition{
+    font-size: 2em;
+    margin-bottom: 4pt;
+}
+
+.db-moon-phase{
     font-size: 2em;
 }

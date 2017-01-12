@@ -1,27 +1,41 @@
 <div *ngIf="weather" fxLayout="column" fxFlexFill fxLayoutAlign="center">
-  <div fxFlexAlign="center">
-    {{ weather.name }}
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>
+      {{ weather.name }}
+    </div>
+    <db-clock></db-clock>
   </div>
-  <div fxFlexAlign="center">
-    <i class="wi wi-owm-701 db-current-condition"></i>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <div>{{weather.main.temp_min | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div div fxLayout="column" fxLayoutAlign="space-between stretch">
+      <div></div>
+      <div>
+        {{tempLow | unitConverter: 'K':'C' | number:'1.0-0' }}°
+      </div>
+    </div>
     <div class="wd-temperature">
       {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
-    <div clas="wd-unit">
+    <!--<div clas="wd-unit">
       {{ temperatureUnit }}
+    </div>-->
+    <div div fxLayout="column" fxLayoutAlign="space-between stretch">
+      <div>
+        <div fxLayout="column">
+          <i class="wi db-current-condition" [ngClass]="'wi-owm-'+weather.weather[0].id"></i>
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div *ngFor="let w of weather.weather">{{w.main}}</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        {{tempHigh | unitConverter: 'K':'C' | number:'1.0-0' }}°
+      </div>
     </div>
-    <div>{{weather.main.temp_max | unitConverter: 'K':'C' | number:'1.0-0' }}</div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <i class="wi db-moon-phase" [ngClass]="'wi-moon-'+moonPhase"></i>
     <div>
       <i class="wi" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime }}
     </div>
-    <i class="wi" [ngClass]="'wi-moon-'+moonPhase"></i>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <div *ngFor="let w of weather.weather">{{w.main}}</div>
   </div>
 </div>

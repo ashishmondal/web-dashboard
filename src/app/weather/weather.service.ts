@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Http, URLSearchParams } from '@angular/http';
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Observer } from 'rxjs/Observer';
+
 import { SettingsService } from '../settings/settings.service';
 import 'rxjs';
 
@@ -9,13 +13,26 @@ export class WeatherService {
 
   private apiKey: string;
   private location: IWeatherLocation;
+
+  public currentWeather: Observable<ICurrentWeather>;
+  private currentWeatherSubject = new Subject<ICurrentWeather>();
+
+  public dailyForecast: Observable<IDailyForecast>;
+  private dailyForecastSubject = new Subject<IDailyForecast>();
+
   constructor(private http: Http, settingsService: SettingsService) {
     this.apiKey = settingsService.load().owApiKey;
     const loc = settingsService.load().cityId.split(',');
     this.location = new ZipCodeLocation(loc[0], loc[1]);
+
+    this.currentWeather = this.currentWeatherSubject.asObservable();
+    this.getCurrentWeatherDetails().subscribe(this.currentWeatherSubject);
+
+    this.dailyForecast = this.dailyForecastSubject.asObservable();
+    this.getDailyForecast().subscribe(this.dailyForecastSubject);
   }
 
-  getCurrentWeatherDetails(): Observable<ICurrentWeather> {
+  private getCurrentWeatherDetails(): Observable<ICurrentWeather> {
     const url = 'http://api.openweathermap.org/data/2.5/weather';
     const params = this.location.searchParams;
     params.set('appid', this.apiKey);
@@ -25,6 +42,17 @@ export class WeatherService {
       .map(response => response.json() as ICurrentWeather);
   }
 
+  private getDailyForecast(days = 7): Observable<IDailyForecast> {
+    const url = 'http://api.openweathermap.org/data/2.5/forecast/daily';
+    const params = this.location.searchParams;
+    params.set('appid', this.apiKey);
+    params.set('cnt', '' + days);
+
+    return Observable.timer(0, 1000 * 60 * 60) // Update every 1 hour
+      .flatMap(() => this.http.get(url, { search: params }))
+      .map(response => response.json() as IDailyForecast);
+  }
+
   getMoonPhase(date = new Date()) {
     var lp = 2551443;
     var new_moon = new Date(1970, 0, 7, 20, 35, 0);
@@ -32,6 +60,36 @@ export class WeatherService {
     return Math.floor(phase / (24 * 3600));
   }
 }
+
+export interface IDailyForecast {
+  city: ICity;
+  cnt: number;
+  list: IForecast[];
+}
+
+export interface ICity {
+  id: number;
+  name: string;
+  coord: ICoordinates;
+  country: string;
+}
+
+export interface IForecast {
+  dt: number;
+  temp: IForecastTemperature;
+  pressure: number;
+  humidity: number;
+  weathe: IWeatherDescription[];
+}
+
+export interface IForecastTemperature {
+  day: number;
+  min: number;
+  max: number;
+  night: number;
+  eve: number;
+  morn: number;
+};
 
 export interface ICurrentWeather {
   coord: ICoordinates;
@@ -133,3 +191,4 @@ export class ZipCodeLocation implements IWeatherLocation {
     return this._params;
   }
 }
+

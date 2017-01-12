@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WeatherService, ICurrentWeather, ZipCodeLocation } from '../weather.service';
+import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 
 @Component({
@@ -11,18 +12,22 @@ import * as moment from 'moment';
     '[attr.fxLayout]': '"column"'
   }
 })
-export class CurrentWeatherComponent implements OnInit {
+export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
-  temperatureUnit: string = '°C';
   weather: ICurrentWeather;
   sunEventTime: string;
   isSunriseNext = true;
   moonPhase = 0;
+  tempLow = 0;
+  tempHigh = 0;
+
+  private currentWeatherSubscription: Subscription;
+  private dailyForecastSubscription: Subscription;
 
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.weatherService.getCurrentWeatherDetails()
+    this.currentWeatherSubscription = this.weatherService.currentWeather
       .subscribe(weather => {
         this.weather = weather;
 
@@ -33,5 +38,21 @@ export class CurrentWeatherComponent implements OnInit {
         this.moonPhase = this.weatherService.getMoonPhase();
         this.cdRef.markForCheck();
       });
+
+    this.dailyForecastSubscription = this.weatherService.dailyForecast
+      .subscribe(forecast => {
+        const first = forecast.list[0];
+        const date = moment(first.dt * 1000);
+
+        if (moment().isSame(date, 'day')) {
+          this.tempLow = first.temp.min;
+          this.tempHigh = first.temp.max;
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.currentWeatherSubscription.unsubscribe();
+    this.dailyForecastSubscription.unsubscribe();
   }
 }
