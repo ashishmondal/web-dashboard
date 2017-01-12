@@ -14,12 +14,24 @@ import 'rxjs';
 export class ScheduleComponent implements OnInit {
 
   get upcomingEvents() {
-    return this.allEvents
+
+    const es = this.allEvents
       .filter(e => moment().isBefore(e.end))
       .map(e => ({
+        month: moment(e.start).format('MMMM'),
         summary: e.summary,
         when: this.getWhen(e)
-      }));
+      }))
+      .reduce((months, event) => {
+        let month = months.find(m => m.month === event.month);
+        if (!month) {
+          month = { month: event.month, events: [] };
+          months.push(month);
+        }
+        month.events.push(event);
+        return months;
+      }, []);
+    return es;
   }
 
   private allEvents: IEvent[];

@@ -27,3 +27,24 @@ td {
 .db-when{
     margin-left: 5pt;
 }
+
+.db-month-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.db-month{
+    font-size: 2em;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    margin: 5pt 2pt 1pt 5pt;
+    padding: 0pt 5pt 0pt 10pt;
+    width: 100%;
+    text-align: right;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+25,ffffff+100&0+0,1+25,1+100 */
+    background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
