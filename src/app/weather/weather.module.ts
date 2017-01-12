@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SettingsService } from '../settings/settings.service';
 
 import { SharedModule } from '../shared/shared.module';
+import { ForecastComponent } from './forecast/forecast.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,8 @@ import { SharedModule } from '../shared/shared.module';
 
     SharedModule
   ],
-  exports: [CurrentWeatherComponent],
+  exports: [CurrentWeatherComponent, ForecastComponent],
   providers: [WeatherService, SettingsService],
-  declarations: [CurrentWeatherComponent]
+  declarations: [CurrentWeatherComponent, ForecastComponent]
 })
 export class WeatherModule { }

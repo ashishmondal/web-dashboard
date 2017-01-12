@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { WeatherService, ICurrentWeather, ZipCodeLocation } from '../weather.service';
+import { WeatherService, ICurrentWeather } from '../weather.service';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 
@@ -48,6 +48,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
           this.tempLow = first.temp.min;
           this.tempHigh = first.temp.max;
         }
+        this.cdRef.markForCheck();
       });
   }
 

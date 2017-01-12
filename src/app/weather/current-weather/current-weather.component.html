@@ -21,7 +21,7 @@
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div>
         <div fxLayout="column">
-          <i class="wi db-current-condition" [ngClass]="'wi-owm-'+weather.weather[0].id"></i>
+          <i class="wi db-current-condition" [ngClass]="'wi-owm-' + (isSunriseNext ? 'night-' : 'day-') + weather.weather[0].id"></i>
           <div fxLayout="row" fxLayoutAlign="space-between">
             <div *ngFor="let w of weather.weather">{{w.main}}</div>
           </div>

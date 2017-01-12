@@ -79,7 +79,7 @@ export interface IForecast {
   temp: IForecastTemperature;
   pressure: number;
   humidity: number;
-  weathe: IWeatherDescription[];
+  weather: IWeatherDescription[];
 }
 
 export interface IForecastTemperature {

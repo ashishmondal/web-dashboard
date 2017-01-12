@@ -1,0 +1,18 @@
+<table>
+  <tr *ngFor="let forecast of forecasts">
+    <td>{{forecast.day}}</td>
+    <td>
+      <i class="wi db-spaced" [ngClass]="'wi-owm-'+forecast.weatherId"></i>
+    </td>
+    <td>
+      <div fxLayout="row" fxLayoutAlign="space-between stretch">
+        <div class="db-spaced">
+          {{ forecast.temperature.min | unitConverter: 'K':'C' | number:'1.0-0' }}°
+        </div>
+        <div>
+          {{ forecast.temperature.max | unitConverter: 'K':'C' | number:'1.0-0' }}°
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
