@@ -16,7 +16,11 @@ export class SettingsComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.form.setValue(this.settingsService.load());
+      try {
+        this.form.setValue(this.settingsService.load());
+      } catch (e) {
+        // Ignore any errors
+      }
     }, 0);
   }
 
