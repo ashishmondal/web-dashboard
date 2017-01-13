@@ -37,7 +37,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
         this.moonPhase = this.weatherService.getMoonPhase();
         this.cdRef.markForCheck();
-      });
+      }, error => console.log(error));
 
     this.dailyForecastSubscription = this.weatherService.dailyForecast
       .subscribe(forecast => {
@@ -49,7 +49,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
           this.tempHigh = first.temp.max;
         }
         this.cdRef.markForCheck();
-      });
+      }, error => console.log(error));
   }
 
   ngOnDestroy() {

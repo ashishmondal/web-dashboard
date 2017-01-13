@@ -1,31 +1,37 @@
 <div class="container">
-    <h1>Dashboard settings</h1>
-    <form #settingsForm="ngForm" (submit)="saveSettings(settingsForm.value)">
-      <div class="form-group">
-        <label for="cityId">City Zip Code</label>
-        <input type="text" class="form-control" name="cityId" id="cityId" required ngModel>
-      </div>
-      <div class="form-group">
-        <label for="owApiKey">Open Weather API Key</label>
-        <input type="text" class="form-control" name="owApiKey" id="owApiKey" required ngModel>
-      </div>
-      <div class="form-group">
-        <label for="calendarUrl">Calendar URL</label>
-        <input type="url" class="form-control" name="calendarUrl" id="calendarUrl" required ngModel>
-      </div>
-      <div class="form-group">
-        <label for="calendarUrlHeader">Calendar URL Request Headers (JSON)</label>
-        <input type="text" class="form-control" name="calendarUrlHeader" id="calendarUrlHeader" ngModel>
-      </div>
-      <button type="submit" class="btn btn-default">Save</button>
-    </form>
-    
-    <form #loadFromWebForm="ngForm" (submit)="loadFromWeb(loadFromWebForm.value)">
-      <div class="form-group">
-        <label for="url">Load from web</label>
-        <input type="text" class="form-control" name="url" id="url" ngModel>
-      </div>
-      <button type="submit" class="btn btn-default">Load</button>
-    </form>
-    
+  <h1>Dashboard settings</h1>
+  <form #settingsForm="ngForm" (submit)="saveSettings(settingsForm.value)">
+    <div class="form-group">
+      <label for="cityId">City Zip Code</label>
+      <input type="text" class="form-control" name="cityId" id="cityId" required ngModel>
+    </div>
+    <div class="form-group">
+      <label for="owApiKey">Open Weather API Key</label>
+      <input type="text" class="form-control" name="owApiKey" id="owApiKey" required ngModel>
+    </div>
+    <div class="form-group">
+      <label for="calendarUrl">Calendar URL</label>
+      <input type="url" class="form-control" name="calendarUrl" id="calendarUrl" required ngModel>
+    </div>
+    <div class="form-group">
+      <label for="calendarUrlHeader">Calendar URL Request Headers (JSON)</label>
+      <input type="text" class="form-control" name="calendarUrlHeader" id="calendarUrlHeader" ngModel>
+    </div>
+    <div *ngIf="saveError" class="alert alert-danger">
+      {{saveError}}
+    </div>
+    <button type="submit" class="btn btn-default">Save</button>
+  </form>
+
+  <form #loadFromWebForm="ngForm" (submit)="loadFromWeb(loadFromWebForm.value)">
+    <div class="form-group">
+      <label for="url">Load from web</label>
+      <input type="url" class="form-control" name="url" id="url" ngModel>
+    </div>
+    <div *ngIf="loadError" class="alert alert-danger">
+      {{loadError}}
+    </div>
+    <button type="submit" class="btn btn-default">Load</button>
+  </form>
+
 </div>

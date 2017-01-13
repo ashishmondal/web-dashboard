@@ -12,14 +12,21 @@ let ical = require('ical');
 export class CalendarService {
   private icalUrl: string;
   private headers: Headers;
+  private error: string;
 
   constructor(private http: Http, settingsService: SettingsService) {
-    const settings = settingsService.load();
-    this.icalUrl = settings.calendarUrl;
-    this.headers = new Headers(JSON.parse(settings.calendarUrlHeader));
+    settingsService.getSettings()
+      .subscribe(settings => {
+        this.icalUrl = settings.calendarUrl;
+        this.headers = new Headers(JSON.parse(settings.calendarUrlHeader));
+      }, error => this.error);
   }
 
   getCalendar() {
+    if (this.error) {
+      return Observable.throw(this.error);
+    }
+
     return Observable.timer(0, 1000 * 60 * 60) // Update every hour
       .flatMap(() => this.http.get(this.icalUrl, { headers: this.headers }))
       .map(response => {

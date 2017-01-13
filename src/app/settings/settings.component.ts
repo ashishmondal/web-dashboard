@@ -11,16 +11,20 @@ import { SettingsService } from './settings.service';
 export class SettingsComponent implements AfterViewInit {
 
   @ViewChild('settingsForm') form: NgForm;
+  saveError: string;
+  loadError: string;
 
   constructor(private settingsService: SettingsService, private router: Router) { }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      try {
-        this.form.setValue(this.settingsService.load());
-      } catch (e) {
-        // Ignore any errors
-      }
+      this.settingsService.getSettings()
+        .subscribe(s => {
+          try {
+            this.form.setValue(s);
+          } catch (e) { this.saveError = e; }
+        },
+        error => this.saveError = error);
     }, 0);
   }
 
@@ -35,7 +39,7 @@ export class SettingsComponent implements AfterViewInit {
       .subscribe(s => {
         //this.form.setValue(this.settingsService.load());
         this.saveSettings(s);
-      });
+      }, error => this.loadError = error);
 
     return false;
   }

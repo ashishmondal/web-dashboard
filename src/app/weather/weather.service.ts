@@ -21,15 +21,20 @@ export class WeatherService {
   private dailyForecastSubject = new Subject<IDailyForecast>();
 
   constructor(private http: Http, settingsService: SettingsService) {
-    this.apiKey = settingsService.load().owApiKey;
-    const loc = settingsService.load().cityId.split(',');
-    this.location = new ZipCodeLocation(loc[0], loc[1]);
+    settingsService.getSettings()
+      .subscribe(settings => {
+        this.apiKey = settings.owApiKey;
+        const loc = settings.cityId.split(',');
+        this.location = new ZipCodeLocation(loc[0], loc[1]);
 
-    this.currentWeather = this.currentWeatherSubject.asObservable();
-    this.getCurrentWeatherDetails().subscribe(this.currentWeatherSubject);
+        this.currentWeather = this.currentWeatherSubject.asObservable();
+        this.getCurrentWeatherDetails().subscribe(this.currentWeatherSubject);
 
-    this.dailyForecast = this.dailyForecastSubject.asObservable();
-    this.getDailyForecast().subscribe(this.dailyForecastSubject);
+        this.dailyForecast = this.dailyForecastSubject.asObservable();
+        this.getDailyForecast().subscribe(this.dailyForecastSubject);
+      }, error => {
+        this.currentWeather = this.dailyForecast = Observable.throw(error);
+      });
   }
 
   private getCurrentWeatherDetails(): Observable<ICurrentWeather> {

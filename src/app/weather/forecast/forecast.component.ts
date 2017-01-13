@@ -25,7 +25,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
           .filter(f => !f.date.isSame(today, 'day'));
 
         this.cdRef.markForCheck();
-      });
+      }, error => console.log(error));
   }
 
   ngOnDestroy() {
