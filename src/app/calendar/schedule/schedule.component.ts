@@ -68,8 +68,8 @@ export class ScheduleComponent implements OnInit {
 
     if (moment().isSame(start, 'day')) {
       day = 'Today';
-      // } else if (start.isBetween(moment(), moment().add(7, 'd'))) {
-      //   //day = start.format('ddd');
+    } else if (start.isBetween(moment(), moment().add(7, 'd'), 'd')) {
+      day = start.format('ddd');
     } else if (moment().isSame(start, 'year')) {
       day = start.format('D MMM')
     } else {
