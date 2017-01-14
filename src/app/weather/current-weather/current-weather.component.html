@@ -8,11 +8,11 @@
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div></div>
-      <div>
+      <div class="wd-secondary-temp" [style.color]="tempToColor(tempLow)">
         {{tempLow | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>
-    <div class="wd-temperature">
+    <div class="wd-temperature" [style.color]="tempToColor(weather.main.temp)">
       {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
     <!--<div clas="wd-unit">
@@ -22,12 +22,12 @@
       <div>
         <div fxLayout="column">
           <i class="wi db-current-condition" [ngClass]="'wi-owm-' + (isSunriseNext ? 'night-' : 'day-') + weather.weather[0].id"></i>
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <div *ngFor="let w of weather.weather">{{w.main}}</div>
+          <div>
+            {{weather.weather[0].main}}
           </div>
         </div>
       </div>
-      <div>
+      <div class="wd-secondary-temp" [style.color]="tempToColor(tempHigh)">
         {{tempHigh | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>
@@ -35,7 +35,8 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <i class="wi db-moon-phase" [ngClass]="'wi-moon-'+moonPhase"></i>
     <div>
-      <i class="wi" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime }}
+      <i class="wi db-sunrise" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime
+      }}
     </div>
   </div>
 </div>

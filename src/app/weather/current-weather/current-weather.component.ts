@@ -1,7 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WeatherService, ICurrentWeather } from '../weather.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
+import * as Color from 'color';
+
+var spline = require('cubic-spline');
 
 @Component({
   selector: 'db-current-weather',
@@ -24,7 +28,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   private currentWeatherSubscription: Subscription;
   private dailyForecastSubscription: Subscription;
 
-  constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
+  constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.currentWeatherSubscription = this.weatherService.currentWeather
@@ -37,7 +41,7 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
         this.moonPhase = this.weatherService.getMoonPhase();
         this.cdRef.markForCheck();
-      }, error => console.log(error));
+      }, error => this.router.navigate(['/settings']));
 
     this.dailyForecastSubscription = this.weatherService.dailyForecast
       .subscribe(forecast => {
@@ -55,5 +59,22 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.currentWeatherSubscription.unsubscribe();
     this.dailyForecastSubscription.unsubscribe();
+  }
+
+  private colorMap = [
+    [318.15, 298.15, 273.15],
+    [0, 90, 210]
+  ];
+  tempToColor(tempInKelvin: number) {
+    const index = this.colorMap[0].findIndex(t => t < tempInKelvin);
+    let hue = 0;
+
+    if (index === void 0) {
+      hue = 210;
+    } else if (index > 0) {
+      const y0 = this.colorMap[1][index], y1 = this.colorMap[1][index - 1], x0 = this.colorMap[0][index], x1 = this.colorMap[0][index - 1], x = tempInKelvin;
+      hue = y0 + ((x - x0) / (x1 - x0) * (y1 - y0));
+    }
+    return `hsl(${hue}, 100%, 50%)`;
   }
 }
