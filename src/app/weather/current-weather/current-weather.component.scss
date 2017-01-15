@@ -2,14 +2,15 @@
     font-size: 150%;
     background: url("../../assets/home-panel-background.png");
     padding: 10pt;
-    border: 5pt solid black;
-    border-radius: 20pt;
+    border: 3pt solid black;
+    border-radius: 10pt;
     box-shadow: 10pt 10pt 20pt rgba(0,0,0,0.5);
 }
 
 .wd-temperature{
     font-size: 600%;
-    margin: -10% 0;
+    margin: -13% 0;
+    align-self: flex-end;
 }
 
 .wd-secondary-temp{
