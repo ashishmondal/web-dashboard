@@ -1,8 +1,17 @@
 <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between stretch">
-  <div fxLayout="column">
-    <db-current-weather></db-current-weather>
-    <db-forecast></db-forecast>
+  <div fxFlex="100" fxLayout="row" class="db-top-left-grad">
+    <div fxFlex="100" fxLayout="row" class="db-top-right-grad">
+      <div fxFlex="100" fxLayout="row" class="db-bottom-right-grad">
+        <div fxFlex="100" fxLayout="row" class="db-bottom-left-grad">
+          <div fxLayout="row">
+            <db-current-weather></db-current-weather>
+            <db-forecast></db-forecast>
+          </div>
+          <div fxLayout="row">
+            <!--<db-schedule></db-schedule>-->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div fxLayout="row">
-    <db-schedule></db-schedule>
-  </div>
+</div>

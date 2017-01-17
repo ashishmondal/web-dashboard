@@ -3,16 +3,17 @@
     <div>
       {{ weather.name }}
     </div>
+    <div>{{date}}</div>
     <db-clock></db-clock>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div></div>
-      <div class="wd-secondary-temp" [style.color]="tempToColor(tempLow)">
+      <div class="wd-secondary-temp">
         {{tempLow | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>
-    <div class="wd-temperature" [style.color]="tempToColor(weather.main.temp)">
+    <div class="wd-current-temp">
       {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
     <!--<div clas="wd-unit">
@@ -27,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div class="wd-secondary-temp" [style.color]="tempToColor(tempHigh)">
+      <div class="wd-secondary-temp">
         {{tempHigh | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>

@@ -1,19 +1,22 @@
 :host{
     font-size: 150%;
-    background: url("../../assets/home-panel-background.png");
-    padding: 10pt;
-    border: 3pt solid black;
-    border-radius: 10pt;
-    box-shadow: 10pt 10pt 20pt rgba(0,0,0,0.5);
 }
 
-.wd-temperature{
+.wd-temp{
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.wd-current-temp{
+    @extend .wd-temp;
+
     font-size: 600%;
     margin: -13% 0;
     align-self: flex-end;
 }
 
 .wd-secondary-temp{
+    @extend .wd-temp;
+
     font-size: 200%;
 }
 

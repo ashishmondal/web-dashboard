@@ -3,9 +3,6 @@ import { WeatherService, ICurrentWeather } from '../weather.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import * as Color from 'color';
-
-var spline = require('cubic-spline');
 
 @Component({
   selector: 'db-current-weather',
@@ -24,6 +21,10 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   moonPhase = 0;
   tempLow = 0;
   tempHigh = 0;
+
+  get date(){
+    return moment().format('ddd, d MMM');
+  }
 
   private currentWeatherSubscription: Subscription;
   private dailyForecastSubscription: Subscription;

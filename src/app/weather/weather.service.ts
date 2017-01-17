@@ -25,7 +25,7 @@ export class WeatherService {
       .subscribe(settings => {
         this.apiKey = settings.owApiKey;
         const loc = settings.cityId.split(',');
-        this.location = new ZipCodeLocation(loc[0], loc[1]);
+        this.location =  new ZipCodeLocation(loc[0], loc[1]);
 
         this.currentWeather = this.currentWeatherSubject.asObservable();
         this.getCurrentWeatherDetails().subscribe(this.currentWeatherSubject);

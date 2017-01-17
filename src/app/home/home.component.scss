@@ -1,9 +1,35 @@
+$top-left-color: #EF629F;
+$top-right-color: #EECDA3;
+$bottom-right-color: #00c3ff;
+$bottom-left-color: #ffff1c;
+
+@mixin grad-back($position, $color){
+            background-image: radial-gradient(farthest-corner at $position, $color 5%, rgba($color, 0) 95%);
+}
+
 :host {
+    color: white;
     display: flex;
     flex: 1;
-    background: url("../../assets/home-background.jpg");
-    padding: 1em;
-    text-shadow: 10pt 10pt 15pt rgba(0,0,0,0.5);
-    box-shadow: inset 0 0 2in black;
-    background-position: center;
+    text-shadow: 1pt 1pt 2pt rgba(0,0,0,0.8);
+}
+
+.db-{
+
+    &top-left-grad{
+        @include grad-back(0 0, $top-left-color);
+    }
+
+    &top-right-grad{
+        @include grad-back(100vw 0, $top-right-color);
+    }
+
+    &bottom-right-grad{
+        @include grad-back(100vw 100vw, $bottom-right-color);
+    }
+
+    &bottom-left-grad{
+        @include grad-back(0 100vw, $bottom-left-color);
+            padding: 1em;
+    }
 }
