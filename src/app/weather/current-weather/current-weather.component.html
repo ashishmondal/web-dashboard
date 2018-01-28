@@ -4,7 +4,7 @@
       {{ weather.name }}
     </div>
     <div>{{date}}</div>
-    <db-clock></db-clock>
+    <!-- <db-clock></db-clock> -->
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
@@ -36,8 +36,7 @@
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <i class="wi db-moon-phase" [ngClass]="'wi-moon-'+moonPhase"></i>
     <div>
-      <i class="wi db-sunrise" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime
-      }}
+      <i class="wi db-sunrise" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime }}
     </div>
   </div>
 </div>

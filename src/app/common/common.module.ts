@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule as NgCommonModule } from '@angular/common';
 import { UnitConverterPipe } from './unit-converter.pipe';
-import { ClockComponent } from './clock/clock.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    NgCommonModule
   ],
-  declarations: [UnitConverterPipe, ClockComponent]
+  declarations: [UnitConverterPipe]
 })
 export class CommonModule { }

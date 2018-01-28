@@ -3,7 +3,6 @@ import { CalendarService, IEvent } from '../calendar.service';
 import { Observable } from 'rxjs/Observable';
 
 import * as moment from 'moment';
-import 'rxjs';
 
 @Component({
   selector: 'db-schedule',
@@ -34,28 +33,28 @@ export class ScheduleComponent implements OnInit {
     return es;
   }
 
-  private allEvents: IEvent[];
+  public allEvents: IEvent[];
 
   constructor(private calendarService: CalendarService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.calendarService.getCalendar()
-      .subscribe(calendar => {
-        this.allEvents = Object.keys(calendar)
-          .map(k => calendar[k])
-          .sort((a, b) => {
-            if (moment(a.start).isBefore(b.start)) {
-              return -1;
-            }
+    // this.calendarService.getCalendar()
+    //   .subscribe(calendar => {
+    //     this.allEvents = Object.keys(calendar)
+    //       .map(k => calendar[k])
+    //       .sort((a, b) => {
+    //         if (moment(a.start).isBefore(b.start)) {
+    //           return -1;
+    //         }
 
-            if (moment(a.start).isAfter(b.start)) {
-              return 1;
-            }
+    //         if (moment(a.start).isAfter(b.start)) {
+    //           return 1;
+    //         }
 
-            return 0;
-          });
-        this.cdRef.markForCheck();
-      });
+    //         return 0;
+    //       });
+    //     this.cdRef.markForCheck();
+    //   });
 
     // Also, update every minute
     Observable.interval(1000 * 60)
@@ -71,7 +70,7 @@ export class ScheduleComponent implements OnInit {
     } else if (start.isBetween(moment(), moment().add(7, 'd'), 'd')) {
       day = start.format('ddd');
     } else if (moment().isSame(start, 'year')) {
-      day = start.format('D MMM')
+      day = start.format('D MMM');
     } else {
       day = start.format('D MMM `YY');
     }
@@ -83,7 +82,7 @@ export class ScheduleComponent implements OnInit {
     return {
       day: day,
       time: time
-    }
+    };
   }
 
   isFullDay(event: IEvent) {

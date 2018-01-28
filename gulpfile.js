@@ -1,27 +1,29 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var ftp = require('vinyl-ftp');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const ftp = require('vinyl-ftp');
 
-var user = process.env.FTP_USER;
-var password = process.env.FTP_PASSWORD;
+const host = process.env.FTP_HOST;
+const user = process.env.FTP_USER;
+const password = process.env.FTP_PASSWORD;
 
-if(!user || !password){
-    throw 'Username or password not provided!';
+if (!host || !user || !password) {
+  throw 'FTP credentials not provided!';
 }
 
-console.log(user + ':' + password);
+gulp.task('deploy', function () {
+  const remotePath = '/';
 
-gulp.task('deploy', function() {
-  var remotePath = '/';
-
-  var conn = ftp.create({
-    host: 'ftp.mondal.in',
+  const conn = ftp.create({
+    host: '',
     user: user,
     password: password,
     log: gutil.log
   });
 
-  gulp.src(['dist/**'], { base: '.', buffer: false })
+  gulp.src(['dist/**'], {
+      base: 'dist',
+      buffer: false
+    })
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
 });
