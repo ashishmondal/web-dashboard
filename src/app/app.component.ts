@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BackgroundImageService } from './background-image.service';
-import { SettingsService } from './settings/settings.service';
+import { BackgroundImageService } from './core';
 
 @Component({
   selector: 'db-root',
-  providers: [BackgroundImageService, SettingsService],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  host: {
-    // disable background image
-    // '[style.background-image]': `backgroundUrl ? 'url(' + backgroundUrl + ')': ''`
-  }
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   backgroundUrl: string;

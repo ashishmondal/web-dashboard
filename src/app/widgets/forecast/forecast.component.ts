@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { WeatherService, IForecast, IForecastTemperature } from '../weather.service';
+import { WeatherService, IForecast, IForecastTemperature } from '../../core';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 

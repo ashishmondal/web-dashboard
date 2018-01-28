@@ -8,7 +8,7 @@ import { map, flatMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observer } from 'rxjs/Observer';
 
-import { SettingsService } from '../settings/settings.service';
+import { SettingsService } from './settings.service';
 
 @Injectable()
 export class WeatherService {

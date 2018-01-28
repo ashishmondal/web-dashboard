@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { WeatherService, ICurrentWeather } from '../weather.service';
+import { WeatherService, ICurrentWeather } from '../../core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -8,10 +8,7 @@ import * as moment from 'moment';
   selector: 'db-current-weather',
   templateUrl: './current-weather.component.html',
   styleUrls: ['./current-weather.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[attr.fxLayout]': '"column"'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
@@ -21,8 +18,13 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   moonPhase = 0;
   tempLow = 0;
   tempHigh = 0;
+  private colorMap = [
+    [318.15, 298.15, 273.15],
+    [0, 90, 210]
+  ];
 
-  get date(){
+
+  get date() {
     return moment().format('ddd, d MMM');
   }
 
@@ -62,10 +64,6 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
     this.dailyForecastSubscription.unsubscribe();
   }
 
-  private colorMap = [
-    [318.15, 298.15, 273.15],
-    [0, 90, 210]
-  ];
   tempToColor(tempInKelvin: number) {
     const index = this.colorMap[0].findIndex(t => t < tempInKelvin);
     let hue = 0;
@@ -73,7 +71,12 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
     if (index === void 0) {
       hue = 210;
     } else if (index > 0) {
-      const y0 = this.colorMap[1][index], y1 = this.colorMap[1][index - 1], x0 = this.colorMap[0][index], x1 = this.colorMap[0][index - 1], x = tempInKelvin;
+      const
+        y0 = this.colorMap[1][index],
+        y1 = this.colorMap[1][index - 1],
+        x0 = this.colorMap[0][index],
+        x1 = this.colorMap[0][index - 1],
+        x = tempInKelvin;
       hue = y0 + ((x - x0) / (x1 - x0) * (y1 - y0));
     }
     return `hsl(${hue}, 100%, 50%)`;

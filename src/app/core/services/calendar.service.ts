@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { timer } from 'rxjs/observable/timer';
+import { map, flatMap } from 'rxjs/operators';
 
-import { SettingsService } from '../settings/settings.service';
+import { SettingsService } from './settings.service';
 
 import * as ical from 'ical';
 
@@ -22,14 +24,13 @@ export class CalendarService {
 
   getCalendar() {
     if (this.error) {
-      return Observable.throw(this.error);
+      return new ErrorObservable(this.error);
     }
 
-    return Observable.timer(0, 1000 * 60 * 60) // Update every hour
-      .flatMap(() => this.http.get(this.icalUrl, { headers: this.headers }))
-      .map(response => {
-        return ical.parseICS(response.json()) as { [key: string]: IEvent };
-      });
+    return timer(0, 1000 * 60 * 60).pipe( // Update every hour
+      flatMap(() => this.http.get(this.icalUrl, { headers: this.headers })),
+      map(response => ical.parseICS(response.json()) as { [key: string]: IEvent })
+    );
   }
 }
 

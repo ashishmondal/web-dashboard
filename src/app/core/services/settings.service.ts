@@ -3,6 +3,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class SettingsService {
@@ -40,9 +41,9 @@ export class SettingsService {
 
   loadFromWeb(url: string) {
     // Add date time stamp to disable cache
-    return this.http.get(url + '?_=' + new Date().getTime()).map(r => {
-      return r.json();
-    });
+    return this.http.get(url + '?_=' + new Date().getTime()).pipe(
+      map(r => r.json())
+    );
   }
 }
 
