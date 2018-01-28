@@ -16,7 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent
   ],
   imports: [
-    FlexLayoutModule.forRoot(),
+    FlexLayoutModule,
     BrowserModule,
 
     AppRoutingModule,

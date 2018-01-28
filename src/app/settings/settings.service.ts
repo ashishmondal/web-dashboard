@@ -6,7 +6,7 @@ import { Subscriber } from 'rxjs/Subscriber';
 
 @Injectable()
 export class SettingsService {
-  private readonly key = 'settings;'
+  private readonly key = 'settings;';
 
   private settings: ISettings;
 
@@ -33,6 +33,7 @@ export class SettingsService {
   }
 
   save(settings: ISettings) {
+    this.settings = settings;
     return this.lsService.set(this.key, settings);
   }
 

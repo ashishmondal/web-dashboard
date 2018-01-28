@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-let convert = require('convert-units');
+import * as convert from 'convert-units';
 
 @Pipe({
   name: 'unitConverter'
