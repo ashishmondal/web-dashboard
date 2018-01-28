@@ -4,9 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SettingsService } from '../settings/settings.service';
 
-import 'rxjs';
-
-let ical = require('ical');
+import * as ical from 'ical';
 
 @Injectable()
 export class CalendarService {

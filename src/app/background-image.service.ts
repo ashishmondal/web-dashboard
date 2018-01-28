@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs';
+import { timer } from 'rxjs/observable/timer';
+import { flatMap, map, distinct } from 'rxjs/operators';
 
 @Injectable()
 export class BackgroundImageService {
@@ -10,12 +10,11 @@ export class BackgroundImageService {
   constructor(private http: Http) { }
 
   getBackgroundImageUrl() {
-    return Observable.timer(0, 1000 * 60 * 60) // Every hour
-      .flatMap(() => this.http.get(this.url))
-      .map(response => {
+    return timer(0, 1000 * 60 * 60).pipe( // Every hour
+      flatMap(() => this.http.get(this.url)),
+      map(response => {
         return 'http://bing.com' + response.json().images[0].url as string;
-      })
-      .distinct();
+      }),
+      distinct());
   }
-
 }
