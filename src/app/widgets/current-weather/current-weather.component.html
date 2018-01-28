@@ -1,20 +1,20 @@
 <div *ngIf="weather" fxLayout="column" fxFlexFill fxLayoutAlign="center">
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <div>
-      {{ weather.name }}
+      {{ place$ | async }}
     </div>
-    <div>{{date}}</div>
+    <div>{{date$ | async}}</div>
     <!-- <db-clock></db-clock> -->
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div></div>
       <div class="wd-secondary-temp">
-        {{tempLow | unitConverter: 'K':'C' | number:'1.0-0' }}°
+        {{tempLow$ | async | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>
     <div class="wd-current-temp">
-      {{ weather.main.temp | unitConverter: 'K':'C' | number:'1.0-0' }}
+      {{ tempCurrent$ | async | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
     <!--<div clas="wd-unit">
       {{ temperatureUnit }}
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="wd-secondary-temp">
-        {{tempHigh | unitConverter: 'K':'C' | number:'1.0-0' }}°
+        {{tempHigh$ | async | unitConverter: 'K':'C' | number:'1.0-0' }}°
       </div>
     </div>
   </div>

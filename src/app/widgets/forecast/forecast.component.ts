@@ -17,7 +17,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.dailyForecastSubscription = this.weatherService.dailyForecast
+    this.dailyForecastSubscription = this.weatherService.dailyForecast$
       .subscribe(forecast => {
         const today = moment();
         this.forecasts = forecast.list
