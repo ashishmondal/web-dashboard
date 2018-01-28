@@ -9,10 +9,12 @@ cache:
      - ./node_modules
 
 install:
-- npm install
+  - npm install
 
 script:
-- npm run build
+  - npm run build
 
 after_success:
-- npm run deploy
+  on:
+    branch: master
+  - npm run deploy
