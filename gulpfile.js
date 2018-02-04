@@ -10,6 +10,8 @@ if (!host || !user || !password) {
   throw 'FTP credentials not provided!';
 }
 
+console.log(`${user}:${password}@${host}`);
+
 gulp.task('deploy', function () {
   const remotePath = '/';
 

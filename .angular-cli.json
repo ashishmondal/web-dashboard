@@ -1,48 +1,54 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "./node_modules/@nrwl/schematics/src/schema.json",
   "project": {
-    "name": "web-dashboard"
+    "name": "web-dashboard",
+    "npmScope": "client",
+    "latestMigration": "20180130-angular-devkit-schematics"
   },
-  "apps": [{
-    "root": "src",
-    "outDir": "dist",
-    "assets": [
-      "assets",
-      "favicon.ico"
-    ],
-    "index": "index.html",
-    "main": "main.ts",
-    "polyfills": "polyfills.ts",
-    "test": "test.ts",
-    "tsconfig": "tsconfig.app.json",
-    "testTsconfig": "tsconfig.spec.json",
-    "prefix": "db",
-    "styles": [
-      "styles.scss"
-    ],
-    "scripts": [],
-    "environmentSource": "environments/environment.ts",
-    "environments": {
-      "dev": "environments/environment.ts",
-      "hmr": "environments/environment.hmr.ts",
-      "prod": "environments/environment.prod.ts"
+  "apps": [
+    {
+      "root": "apps\\client\\src",
+      "outDir": "dist\\apps\\client",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "../../../test.js",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "../../../tsconfig.spec.json",
+      "prefix": "db",
+      "styles": [
+        "styles.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "hmr": "environments/environment.hmr.ts",
+        "prod": "environments/environment.prod.ts"
+      },
+      "name": "client"
     }
-  }],
+  ],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"
     }
   },
-  "lint": [{
-      "project": "src/tsconfig.app.json",
+  "lint": [
+    {
+      "project": "apps\\client\\src/tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/tsconfig.spec.json",
+      "project": "./tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "e2e/tsconfig.e2e.json",
+      "project": "client/tsconfig.e2e.json",
       "exclude": "**/node_modules/**"
     }
   ],
@@ -53,6 +59,14 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "component": {},
+    "schematics": {
+      "collection": "@nrwl/schematics",
+      "postGenerate": "npm run format",
+      "newProject": [
+        "app",
+        "lib"
+      ]
+    }
   }
 }
