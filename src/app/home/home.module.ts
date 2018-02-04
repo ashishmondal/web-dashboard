@@ -2,18 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 
-import { WeatherModule } from '../weather/weather.module';
-import { CalendarModule } from '../calendar/calendar.module';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { WidgetsModule } from '../widgets/widgets.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FlexLayoutModule,
-    
-    WeatherModule,
-    CalendarModule
+
+    WidgetsModule
   ],
   exports: [HomeComponent],
   declarations: [HomeComponent]

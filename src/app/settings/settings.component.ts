@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SettingsService } from './settings.service';
+import { SettingsService } from '../core';
 
 @Component({
   selector: 'db-settings',
@@ -37,7 +37,7 @@ export class SettingsComponent implements AfterViewInit {
   loadFromWeb(value) {
     this.settingsService.loadFromWeb(value.url)
       .subscribe(s => {
-        //this.form.setValue(this.settingsService.load());
+        // this.form.setValue(this.settingsService.load());
         this.saveSettings(s);
       }, error => this.loadError = error);
 

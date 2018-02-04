@@ -10,6 +10,7 @@ import { HomeModule } from './home/home.module';
 import { SettingsModule } from './settings/settings.module';
 
 import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from './core';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 
     AppRoutingModule,
 
+    CoreModule,
     HomeModule,
     SettingsModule
   ],

@@ -1,66 +1,66 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
-
+import { URLSearchParams } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { timer } from 'rxjs/observable/timer';
-import { map, flatMap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { Observer } from 'rxjs/Observer';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { SettingsService } from '../settings/settings.service';
+import { LocationService } from './location.service';
+import { SettingsService } from './settings.service';
+import { ISettings } from './settings.service';
 
 @Injectable()
 export class WeatherService {
+  public currentWeather$: Observable<ICurrentWeather>;
+  public dailyForecast$: Observable<IDailyForecast>;
 
-  private apiKey: string;
-  private location: IWeatherLocation;
+  constructor(
+    private route: ActivatedRoute,
+    private httpClient: HttpClient, private locationService: LocationService, settingsService: SettingsService) {
+    const settings$ = settingsService.getSettings().pipe(shareReplay());
 
-  public currentWeather: Observable<ICurrentWeather>;
-  private currentWeatherSubject = new Subject<ICurrentWeather>();
+    this.currentWeather$ = settings$.pipe(
+      switchMap(settings => this.getCurrentWeatherDetails(settings)),
+      shareReplay()
+    );
 
-  public dailyForecast: Observable<IDailyForecast>;
-  private dailyForecastSubject = new Subject<IDailyForecast>();
-
-  constructor(private http: Http, settingsService: SettingsService) {
-    settingsService.getSettings()
-      .subscribe(settings => {
-        this.apiKey = settings.owApiKey;
-        const loc = settings.cityId.split(',');
-        this.location = new ZipCodeLocation(loc[0], loc[1]);
-
-        this.currentWeather = this.currentWeatherSubject.asObservable();
-        this.getCurrentWeatherDetails().subscribe(this.currentWeatherSubject);
-
-        this.dailyForecast = this.dailyForecastSubject.asObservable();
-        this.getDailyForecast().subscribe(this.dailyForecastSubject);
-      }, error => {
-        this.currentWeather = this.dailyForecast = new ErrorObservable(error);
-      });
+    this.dailyForecast$ = settings$.pipe(
+      switchMap(settings => this.getDailyForecast(settings)),
+      shareReplay()
+    );
   }
 
-  private getCurrentWeatherDetails(): Observable<ICurrentWeather> {
+  private getCurrentWeatherDetails(settings: ISettings): Observable<ICurrentWeather> {
     const url = 'http://api.openweathermap.org/data/2.5/weather';
-    const params = this.location.searchParams;
-    params.set('appid', this.apiKey);
 
     return timer(0, 1000 * 60 * 15).pipe( // Update every 15 min
-      flatMap(() => this.http.get(url, { search: params })),
-      map(response => response.json() as ICurrentWeather));
+      switchMap(() => this.locationService.location$),
+      map(pos => ({
+        appid: settings.owApiKey,
+        lat: '' + pos.coords.latitude,
+        lon: '' + pos.coords.longitude
+      })),
+      switchMap<any, ICurrentWeather>(params => this.httpClient.get(url, { params: params }))
+    );
   }
 
-  private getDailyForecast(days = 7): Observable<IDailyForecast> {
+  private getDailyForecast(settings: ISettings, days = 7): Observable<IDailyForecast> {
     const url = 'http://api.openweathermap.org/data/2.5/forecast/daily';
-    const params = this.location.searchParams;
-    params.set('appid', this.apiKey);
-    params.set('cnt', '' + days);
 
     return timer(0, 1000 * 60 * 60).pipe( // Update every 1 hour
-      flatMap(() => this.http.get(url, { search: params })),
-      map(response => response.json() as IDailyForecast));
+      switchMap(() => this.locationService.location$),
+      map(pos => ({
+        appid: settings.owApiKey,
+        lat: '' + pos.coords.latitude,
+        lon: '' + pos.coords.longitude,
+        cnt: '' + days
+      })),
+      switchMap<any, IDailyForecast>(params => this.httpClient.get(url, { params: params }))
+    );
   }
 
-  getMoonPhase(date = new Date()) {
+  public getMoonPhase(date = new Date()) {
     const lp = 2551443;
     const new_moon = new Date(1970, 0, 7, 20, 35, 0);
     const phase = ((date.getTime() - new_moon.getTime()) / 1000) % lp;

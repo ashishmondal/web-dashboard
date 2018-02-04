@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { WeatherService, IForecast, IForecastTemperature } from '../weather.service';
+import { WeatherService, IForecast, IForecastTemperature } from '../../core';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 
@@ -17,7 +17,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
   constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.dailyForecastSubscription = this.weatherService.dailyForecast
+    this.dailyForecastSubscription = this.weatherService.dailyForecast$
       .subscribe(forecast => {
         const today = moment();
         this.forecasts = forecast.list
