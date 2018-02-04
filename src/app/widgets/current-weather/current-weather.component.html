@@ -1,11 +1,11 @@
-<div *ngIf="weather" fxLayout="column" fxFlexFill fxLayoutAlign="center">
+<div fxLayout="column" fxFlexFill fxLayoutAlign="top">
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <div>
       {{ place$ | async }}
     </div>
     <div>{{date$ | async}}</div>
-    <!-- <db-clock></db-clock> -->
   </div>
+  <db-clock></db-clock>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div></div>
@@ -16,15 +16,12 @@
     <div class="wd-current-temp">
       {{ tempCurrent$ | async | unitConverter: 'K':'C' | number:'1.0-0' }}
     </div>
-    <!--<div clas="wd-unit">
-      {{ temperatureUnit }}
-    </div>-->
     <div div fxLayout="column" fxLayoutAlign="space-between stretch">
       <div>
         <div fxLayout="column">
-          <i class="wi db-current-condition" [ngClass]="'wi-owm-' + (isSunriseNext ? 'night-' : 'day-') + weather.weather[0].id"></i>
+          <i class="wi db-current-condition" [ngClass]="'wi-owm-' + (isSunriseNext ? 'night-' : 'day-') + (conditionId$ | async)"></i>
           <div>
-            {{weather.weather[0].main}}
+            {{condition$ | async}}
           </div>
         </div>
       </div>
@@ -34,9 +31,9 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center">
-    <i class="wi db-moon-phase" [ngClass]="'wi-moon-'+moonPhase"></i>
+    <i class="wi db-moon-phase" [ngClass]="'wi-moon-'+(moonPhase$ | async)"></i>
     <div>
-      <i class="wi db-sunrise" [class.wi-sunrise]="isSunriseNext" [class.wi-sunset]="!isSunriseNext"></i> {{ sunEventTime }}
+      <i class="wi db-sunrise" [ngClass]="{'wi-sunrise': !(isDayTime$ | async), 'wi-sunset': (isDayTime$ | async)}"></i> {{ sunEventTime$ | async }}
     </div>
   </div>
 </div>

@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
-import { map, share } from 'rxjs/operators';
+import { map, share, switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ICurrentWeather, WeatherService } from '../../core';
+import { ICurrentWeather, WeatherService, PlanetaryService, IWeatherCondition } from '../../core';
+import { empty } from 'rxjs/observable/empty';
 
 
 @Component({
@@ -22,10 +23,14 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   public tempCurrent$: Observable<number>;
   public tempLow$: Observable<number>;
   public tempHigh$: Observable<number>;
-  weather: ICurrentWeather;
-  sunEventTime: string;
+  public condition$: Observable<string>;
+  public conditionId$: Observable<number>;
+  public moonPhase$: Observable<number>;
+  public isDayTime$: Observable<boolean>;
+
+  sunEventTime$: Observable<string>;
   isSunriseNext = true;
-  moonPhase = 0;
+
   private colorMap = [
     [318.15, 298.15, 273.15],
     [0, 90, 210]
@@ -33,10 +38,13 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
 
   public date$: Observable<string>;
 
-  private currentWeatherSubscription: Subscription;
   private dailyForecastSubscription: Subscription;
 
-  constructor(private weatherService: WeatherService, private cdRef: ChangeDetectorRef, private router: Router) {
+  constructor(
+    private planetaryService: PlanetaryService,
+    private weatherService: WeatherService,
+    private cdRef: ChangeDetectorRef,
+    private router: Router) {
     this.date$ = timer(0, 1000 * 60).pipe(
       map(t => moment().format('ddd, D MMM'))
     );
@@ -46,20 +54,34 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
     this.tempCurrent$ = this.weather$.pipe(map(w => w.main.temp));
     this.tempLow$ = this.weather$.pipe(map(w => w.main.temp_min));
     this.tempHigh$ = this.weather$.pipe(map(w => w.main.temp_max));
+    this.condition$ = this.weather$.pipe(map(w => w.weather[0].main));
+    this.conditionId$ = this.weather$.pipe(map(w => w.weather[0].id));
+    this.moonPhase$ = this.planetaryService.moonPhase$;
+    this.isDayTime$ = this.date$.pipe(
+      switchMap(d => this.planetaryService.sunEvent$),
+      map(se => moment().isAfter(moment(se.sunrise)) && moment().isBefore(moment(se.sunset)))
+    );
+    this.sunEventTime$ = this.planetaryService.sunEvent$.pipe(
+      map(se => moment(se.sunset).format('h:mm A'))
+    );
+  }
+
+  private isDayTime(weather: IWeatherCondition) {
+
   }
 
   ngOnInit() {
-    this.currentWeatherSubscription = this.weatherService.currentWeather$
-      .subscribe(weather => {
-        this.weather = weather;
+    // this.currentWeatherSubscription = this.weatherService.currentWeather$
+    //   .subscribe(weather => {
+    //     this.weather = weather;
 
-        const sunrise = moment(weather.sys.sunrise * 1000), sunset = moment(weather.sys.sunset * 1000);
-        this.isSunriseNext = sunrise.isBefore(sunset) && moment().isBefore(sunrise);
-        this.sunEventTime = (this.isSunriseNext ? sunrise : sunset).format('h:mm A');
+    //     const sunrise = moment(weather.sys.sunrise * 1000), sunset = moment(weather.sys.sunset * 1000);
+    //     this.isSunriseNext = sunrise.isBefore(sunset) && moment().isBefore(sunrise);
+    //     this.sunEventTime = (this.isSunriseNext ? sunrise : sunset).format('h:mm A');
 
-        this.moonPhase = this.weatherService.getMoonPhase();
-        this.cdRef.markForCheck();
-      }, error => this.router.navigate(['/settings']));
+    //     this.moonPhase = this.weatherService.getMoonPhase();
+    //     this.cdRef.markForCheck();
+    //   }, error => this.router.navigate(['/settings']));
 
     this.dailyForecastSubscription = this.weatherService.dailyForecast$
       .subscribe(forecast => {
@@ -71,7 +93,6 @@ export class CurrentWeatherComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.currentWeatherSubscription.unsubscribe();
     this.dailyForecastSubscription.unsubscribe();
   }
 

@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 
 @Component({
   selector: 'db-clock',
@@ -13,12 +13,13 @@ import * as moment from 'moment';
 })
 export class ClockComponent {
 
-  public time$: Observable<string>;
+  public hour$: Observable<string>;
+  public tick$: Observable<string>;
+  public rest$: Observable<string>;
 
   constructor() {
-    this.time$ = timer(0, 500).pipe(
-      map(t => moment().format(t % 2 ? 'h:mm A' : 'h mm A'))
-    );
+    this.hour$ = timer(0, 500).pipe(map(t => moment().format('h')));
+    this.tick$ = timer(0, 500).pipe(map(t => t % 2 ? ':' : '\xa0'));
+    this.rest$ = timer(0, 500).pipe(map(t => moment().format('mm A')));
   }
-
 }

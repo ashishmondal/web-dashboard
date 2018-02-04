@@ -1,23 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
-
+import { URLSearchParams } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { timer } from 'rxjs/observable/timer';
-import { map, flatMap, switchMap, shareReplay } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { Observer } from 'rxjs/Observer';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
+import { LocationService } from './location.service';
 import { SettingsService } from './settings.service';
 import { ISettings } from './settings.service';
 
 @Injectable()
 export class WeatherService {
-
   public currentWeather$: Observable<ICurrentWeather>;
   public dailyForecast$: Observable<IDailyForecast>;
 
-  constructor(private http: Http, settingsService: SettingsService) {
+  constructor(
+    private route: ActivatedRoute,
+    private httpClient: HttpClient, private locationService: LocationService, settingsService: SettingsService) {
     const settings$ = settingsService.getSettings().pipe(shareReplay());
 
     this.currentWeather$ = settings$.pipe(
@@ -33,28 +33,31 @@ export class WeatherService {
 
   private getCurrentWeatherDetails(settings: ISettings): Observable<ICurrentWeather> {
     const url = 'http://api.openweathermap.org/data/2.5/weather';
-    const loc = settings.cityId.split(',');
-    const location = new ZipCodeLocation(loc[0], loc[1]);
-    const params = location.searchParams;
-    params.set('appid', settings.owApiKey);
 
     return timer(0, 1000 * 60 * 15).pipe( // Update every 15 min
-      flatMap(() => this.http.get(url, { search: params })),
-      map(response => response.json() as ICurrentWeather)
+      switchMap(() => this.locationService.location$),
+      map(pos => ({
+        appid: settings.owApiKey,
+        lat: '' + pos.coords.latitude,
+        lon: '' + pos.coords.longitude
+      })),
+      switchMap<any, ICurrentWeather>(params => this.httpClient.get(url, { params: params }))
     );
   }
 
   private getDailyForecast(settings: ISettings, days = 7): Observable<IDailyForecast> {
     const url = 'http://api.openweathermap.org/data/2.5/forecast/daily';
-    const loc = settings.cityId.split(',');
-    const location = new ZipCodeLocation(loc[0], loc[1]);
-    const params = location.searchParams;
-    params.set('appid', settings.owApiKey);
-    params.set('cnt', '' + days);
 
     return timer(0, 1000 * 60 * 60).pipe( // Update every 1 hour
-      switchMap(() => this.http.get(url, { search: params })),
-      map(response => response.json() as IDailyForecast));
+      switchMap(() => this.locationService.location$),
+      map(pos => ({
+        appid: settings.owApiKey,
+        lat: '' + pos.coords.latitude,
+        lon: '' + pos.coords.longitude,
+        cnt: '' + days
+      })),
+      switchMap<any, IDailyForecast>(params => this.httpClient.get(url, { params: params }))
+    );
   }
 
   public getMoonPhase(date = new Date()) {

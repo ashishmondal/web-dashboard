@@ -1,35 +1,38 @@
-:host{
-    font-size: 150%;
+:host {
+  font-size: 150%;
 }
 
-.wd-temp{
-    font-family: 'Open Sans Condensed', sans-serif;
+db-clock {
+  font-family: 'Audiowide';
+  font-size: 200%;
 }
 
-.wd-current-temp{
-    @extend .wd-temp;
-
-    font-size: 600%;
-    margin: -13% 0;
-    align-self: flex-end;
+.wd-temp {
+  font-family: 'Open Sans Condensed', sans-serif;
 }
 
-.wd-secondary-temp{
-    @extend .wd-temp;
-
-    font-size: 200%;
+.wd-current-temp {
+  @extend .wd-temp;
+  font-size: 600%;
+  margin: -13% 0;
+  align-self: flex-end;
 }
 
-.db-current-condition{
-    font-size: 200%;
-    margin-bottom: 4pt;
+.wd-secondary-temp {
+  @extend .wd-temp;
+  font-size: 200%;
 }
 
-.db-moon-phase{
-    font-size: 200%;
-    text-shadow: 0 0 5pt white;
+.db-current-condition {
+  font-size: 200%;
+  margin-bottom: 4pt;
 }
 
-.db-sunrise{
-    color: yellow;
+.db-moon-phase {
+  font-size: 200%;
+  text-shadow: 0 0 5pt white;
+}
+
+.db-sunrise {
+  color: yellow;
 }
