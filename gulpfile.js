@@ -1,29 +1,25 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-const ftp = require('vinyl-ftp');
+const GulpSSH = require('gulp-ssh');
 
-const host = process.env.FTP_HOST;
-const user = process.env.FTP_USER;
-const password = process.env.FTP_PASSWORD;
+const host = process.env.SSH_HOST;
+const user = process.env.SSH_USER;
+const key = process.env.SSH_KEY;
 
-if (!host || !user || !password) {
-  throw 'FTP credentials not provided!';
-}
+const config = {
+  host: host,
+  port: 22,
+  username: user,
+  privateKey: key
+};
+
+const gulpSSH = new GulpSSH({
+  ignoreErrors: false,
+  sshConfig: config
+});
 
 gulp.task('deploy', function () {
-  const remotePath = '/';
-
-  const conn = ftp.create({
-    host: '',
-    user: user,
-    password: password,
-    log: gutil.log
-  });
-
-  gulp.src(['dist/**'], {
-      base: 'dist',
-      buffer: false
-    })
-    .pipe(conn.newer(remotePath))
-    .pipe(conn.dest(remotePath));
+  return gulp
+    .src(['dist/**'])
+    .pipe(gulpSSH.dest('/opt/bitnami/apache2/htdocs'))
 });
